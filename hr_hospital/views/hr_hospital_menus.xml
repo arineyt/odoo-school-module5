@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <!-- Top menu item -->
+    <menuitem 
+        name="Hospital" 
+        id="hr_hospital_menu_root"
+        sequence="100"/>
+    <!-- menu categories -->
+    <menuitem 
+        name="Registry" 
+        id="hr_hospital_registry_menu"
+        parent="hr_hospital_menu_root" 
+        sequence="10"/>
+    <menuitem
+        id="hr_hospital_visit_menu"
+        name="Visits"
+        parent="hr_hospital_menu_root"
+        sequence="20"/>
+    <menuitem
+        id="hr_hospital_report_menu"
+        name="Reports"
+        parent="hr_hospital_menu_root"
+        sequence="30"/>
+    <menuitem
+        id="hr_hospital_catalogs_menu"
+        name="Catalogs"
+        parent="hr_hospital_menu_root"
+        sequence="40"/>
+</odoo>

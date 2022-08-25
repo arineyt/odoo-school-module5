@@ -1,0 +1,192 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="doctor_view_tree" model="ir.ui.view">
+        <field name="name">doctor.view.tree</field>
+        <field name="model">hr_hospital.doctor</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="last_name"/>
+                <field name="first_name"/>
+                <field name="middle_name"/>
+                <field name="gender"/>
+                <field name="specialty"/>
+                <field name="is_intern"/>
+            </tree>
+        </field>
+    </record>
+    <record id="doctor_view_form" model="ir.ui.view">
+        <field name="name">doctor.view.form</field>
+        <field name="model">hr_hospital.doctor</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="last_name"/>
+                            <field name="first_name"/>
+                            <field name="middle_name"/>
+                            <field name="gender"/>
+                            <separator string="Contacts"/>
+                            <field name="phone"/>
+                            <field name="email"/>
+                        </group>
+                        <group>
+                            <field name="photo" widget='image' class='oe_avatar'/>
+                            <field name="specialty"/>
+                            <field name="is_intern"/>
+                            <field name="mentor_id" attrs="{'invisible':[('is_intern', '=', False)]}"/>
+                        </group>
+                    </group>
+                    <separator string="Description"/>
+                    <field name="description" class="oe-bordered-editor"/>
+                    <notebook>
+                        <page name="interns" string="Interns" attrs="{'invisible':[('is_intern', '=', True)]}">
+                            <field name="intern_ids" mode="kanban">
+                                <kanban>
+                                    <field name="last_name"/>
+                                    <field name="first_name"/>
+                                    <field name="middle_name"/>
+                                    <field name="specialty"/>
+                                    <field name="photo"/>
+                                    <templates>
+                                        <t t-name="kanban-box">
+                                            <div class="container o_kanban_card_content">
+                                                <field name="photo" widget="image"/>
+                                                <div style="height: 15px;"/>
+                                                <div class="oe_kanban_details">
+                                                    <field name="last_name"/>
+                                                    <field name="first_name"/>
+                                                    <field name="middle_name"/>
+                                                    <div style="height: 15px;"/>
+                                                    <field name="specialty"/>
+                                                </div>
+                                            </div>
+                                        </t>
+                                    </templates>
+                                </kanban>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="visit_action_from_doctor" model="ir.actions.act_window">
+        <field name="name">Patient visit to doctor</field>
+        <field name="res_model">hr_hospital.visit</field>
+        <field name="view_mode">form,tree</field>
+        <field name="domain">[('doctor_id','=',active_id)]</field>
+        <field name="context">{
+            "default_patient_id":False,
+            "default_doctor_id":active_id,
+            }
+        </field>
+    </record>
+
+    <record id="doctor_view_kanban" model="ir.ui.view">
+        <field name="name">doctor.view.kanban</field>
+        <field name="model">hr_hospital.doctor</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban" default_group_by="specialty">
+                <field name="last_name"/>
+                <field name="first_name"/>
+                <field name="middle_name"/>
+                <field name="specialty"/>
+                <field name="is_intern"/>
+                <field name="photo"/>
+                <field name="color"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_global_click">
+                            <div class="o_kanban_card_header_title">
+                                <field name="last_name"/>
+                                <field name="first_name"/>
+                                <field name="middle_name"/>
+                                <strong>
+                                    <field name="specialty"/>
+                                </strong>
+                            </div>
+
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle btn"
+                                   data-toggle="dropdown" href="#">
+                                    <span class="fa fa-ellipsis-v" aria-hidden="true"/>
+                                </a>
+                                <div class="o_kanban_card_manage_setting row mt16">
+                                <div class="dropdown-menu" role="menu">
+                                    <t t-if="widget.editable">
+                                        <a role="menuitem" type="edit"
+                                           class="dropdown-item">Edit
+                                        </a>
+                                    </t>
+                                    <t t-if="widget.deletable">
+                                        <a role="menuitem"
+                                           type="delete"
+                                           class="dropdown-item">Delete
+                                        </a>
+                                    </t>
+                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
+                                </div>
+                                    </div>
+                            </div>
+
+                            <div class="col-xs-12" style="height: 15px;"/>
+
+                            <div class="container o_kanban_card_content">
+                                <div class="row">
+                                    <div class="col-6 o_kanban_primary_left">
+                                        <div class="o_kanban_image">
+                                            <field name="photo" widget="image"/>
+                                        </div>
+                                    </div>
+                                    <div class="col-6 o_kanban_primary_right">
+                                            <field name="patient_ids"
+                                                   widget="many2many_tags"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xs-12" style="height: 15px;"/>
+
+                            <div class="container fds">
+                                <div class="row">
+                                    <div class="col-6 o_kanban_primary_right">
+                                        <button string="Create visit" name="%(visit_action_from_doctor)d" type="action">
+                                            <span>Create visit</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="doctor_action" model="ir.actions.act_window">
+        <field name="name">Doctors</field>
+        <field name="res_model">hr_hospital.doctor</field>
+        <field name="view_mode">tree,form,kanban</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <record id="doctor_search" model="ir.ui.view">
+        <field name="name">doctor.view.search</field>
+        <field name="model">hr_hospital.doctor</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <filter name="Mentors" domain="[('is_intern','=',False),('intern_ids','!=',False)]"/>
+                <filter name="Interns" domain="[('is_intern','=',True)]"/>
+                <filter name="NotDestined" string="Not Destined" domain="[('patient_ids','=',False)]"/>
+            </search>
+        </field>
+    </record>
+    <menuitem
+            id="doctor_hospital_tree"
+            name="Doctor"
+            parent="hr_hospital_registry_menu"
+            action="doctor_action"
+            sequence="20"/>
+</odoo>

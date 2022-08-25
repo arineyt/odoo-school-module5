@@ -1,0 +1,118 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="patient_view_tree" model="ir.ui.view">
+        <field name="name">view.patient.form.tree</field>
+        <field name="model">hr_hospital.patient</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="last_name"/>
+                <field name="first_name"/>
+                <field name="middle_name"/>
+                <field name="age"/>
+                <field name="gender"/>
+            </tree>
+        </field>
+    </record>
+    <record id="patient_view_form" model="ir.ui.view">
+        <field name="name">view.patient.form</field>
+        <field name="model">hr_hospital.patient</field>
+        <field name="arch" type="xml">
+            <form string="Patient">
+                <header>
+                    <button string="Create visit" name="%(action_from_patient_create_visit)d"
+                            type="action" class="oe_stat_button" icon="fa-user"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(history_visit_action_from_patient)d" type="action" class="oe_stat_button" icon="fa-user">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Visits history</span>
+                            </div>
+                        </button>
+                        <button name="%(history_diagnosis_action_from_patient)d" type="action" class="oe_stat_button" icon="fa-user-md">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Diagnosis</span>
+                            </div>
+                        </button>
+                        <button name="%(history_study_action_from_patient)d" type="action" class="oe_stat_button" icon="fa-edit">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">Study history</span>
+                            </div>
+                        </button>
+                    </div>
+                    <notebook>
+                        <page name="patient" string="Patient">
+                            <group>
+                                <group>
+                                    <field name="last_name"/>
+                                    <field name="first_name"/>
+                                    <field name="middle_name"/>
+                                    <field name="date_of_birth"/>
+                                    <field name="age"/>
+                                    <field name="gender"/>
+                                    <field name="personal_doctor_id"/>
+                                    <field name="degree_of_morbidity"/>
+                                </group>
+                                <group>
+                                    <field name="photo"  widget='image' class='oe_avatar'/>
+                                    <separator string="Passport"/>
+                                    <field name="passport_series"/>
+                                    <field name="passport_number"/>
+                                    <field name="passport_issued"/>
+                                    <field name="passport_issued_by"/>
+                                    <separator string="Contacts"/>
+                                    <field name="phone"/>
+                                    <field name="email"/>
+                                    <field name="contact_person_id"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page name="doctor" string="Doctors">
+                            <field name="personal_doctor_history_ids">
+                                <tree create="false">
+                                    <field name="appointment_date"/>
+                                    <field name="doctor_id"/>
+                                    <field name="patient_id" invisible="True"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="visits" string="Visits">
+                            <field name="visit_ids">
+                                <tree>
+                                    <field name="date_of_visit"/>
+                                    <field name="doctor_id"/>
+                                    <field name="diagnosis_id" />
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="diagnosis" string="Diagnosis">
+                            <field name="diagnosis_ids">
+                                <tree>
+                                    <field name="date_of_diagnosis"/>
+                                    <field name="disease_id"/>
+                                    <field name="doctor_id"/>
+                                    <field name="patient_id" invisible="True"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                    <separator string="Description"/>
+                    <field name="description" class="oe-bordered-editor" />
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="patient_action" model="ir.actions.act_window">
+        <field name="name">Patients</field>
+        <field name="res_model">hr_hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem
+            name="Patient"
+            id="patient_hospital_tree"
+            parent="hr_hospital_registry_menu"
+            action="patient_action"
+            sequence="10" />
+</odoo>

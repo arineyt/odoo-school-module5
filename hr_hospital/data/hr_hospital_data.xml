@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="disease_type_1" model="hr_hospital.disease.type">
+        <field name="name">Allergies</field>
+    </record>
+    <record id="disease_type_2" model="hr_hospital.disease.type">
+        <field name="name">Diarrhea</field>
+    </record>
+    <record id="disease_type_3" model="hr_hospital.disease.type">
+        <field name="name">Headaches</field>
+    </record>
+</odoo>

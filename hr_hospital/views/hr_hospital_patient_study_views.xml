@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="patient_study_view_tree" model="ir.ui.view">
+        <field name="name">patient.study.view.tree</field>
+        <field name="model">hr_hospital.patient.study</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="telephone"/>
+                <field name="doctor_id"/>
+                <field name="study_id"/>
+                <field name="sample_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="patient_study_view_form" model="ir.ui.view">
+        <field name="name">patient.study.view.form</field>
+        <field name="model">hr_hospital.patient.study</field>
+        <field name="arch" type="xml">
+            <form string="Patient study">
+                <sheet>
+                    <group>
+                        <label for="name" class="oe_inline"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <field name="patient_id"/>
+                        <field name="doctor_id"/>
+                        <field name="study_id"/>
+                        <field name="sample_id"/>
+                        <separator string="Conclusion"/>
+                        <field name="conclusion" class="oe-bordered-editor" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="patient_study_view_search" model="ir.ui.view">
+        <field name="name">patient.test.view.search</field>
+        <field name="model">hr_hospital.patient.study</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="patient_id" filter_domain="[('name','ilike',self)]"/>
+                <filter name="filter_create_date" date="create_date" default_period="this_month"/>
+                <field name="telephone"/>
+            </search>
+        </field>
+    </record>
+    <record id="patient_study_action" model="ir.actions.act_window">
+        <field name="name">Patient Study</field>
+        <field name="res_model">hr_hospital.patient.study</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{'search_default_filter_create_date':1,}</field>
+    </record>
+    <record id="history_study_action_from_patient" model="ir.actions.act_window">
+        <field name="name">Patient Test</field>
+        <field name="res_model">hr_hospital.patient.study</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('patient_id','=',active_id)]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem
+        id="patient_study_menu"
+        name="Patient studies"
+        action="patient_study_action"
+        parent="hr_hospital_visit_menu"
+        sequence="100"/>
+</odoo>

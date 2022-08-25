@@ -1,0 +1,131 @@
+<odoo>
+
+    <template id="main_header">
+        <div style="text-align:right;">
+
+            <div style="width: 100%; text-align:right">
+                <img t-att-src="image_data_uri(user.company_id.logo)"
+                     style="max-height: 150px;max-width: 300px;" alt="Logo"/>
+            </div>
+
+            <div>
+                <span t-esc="user.company_id.city"/>
+                <br/>
+                <span t-esc="user.company_id.street"/>
+                <br/>
+                <span t-esc="user.company_id.phone"/>
+                <br/>
+                <span t-esc="user.company_id.email"/>
+                <br/>
+            </div>
+
+        </div>
+    </template>
+
+    <template id="information_about_doctor">
+        <div style="text-align:right;">
+            <strong>
+                <span t-esc="doc.display_name"/>
+                <br/>
+                <span t-esc="doc.specialty"/>
+            </strong>
+        </div>
+        <br/>
+    </template>
+
+    <template id="history_about_patient_of_doctor">
+        <div style="text-align:center; margin: 0 auto;">
+            <h3>Visits of patients</h3>
+        </div>
+        <t t-if="len(doc.visit_ids)">
+            <t t-foreach="doc.visit_ids" t-as="visit_line">
+                <div style="text-align:center; margin: 0 auto;">
+                    <span t-esc="visit_line.display_name"/>
+                    -
+                    <span t-esc="visit_line.patient_id.display_name"/>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="table_of_patient">
+        <div>
+            <div style="text-align: center;">
+                <h3>Patients</h3>
+            </div>
+            <br/>
+            <table style="border: 1px solid black;"
+                   width="100%">
+                <tr>
+                    <th style="border: 1px solid black;">
+                        <t>Patient</t>
+                    </th>
+                    <th style="border: 1px solid black;">
+                        <t>Telephone</t>
+                    </th>
+                    <th style="border: 1px solid black;">
+                        <t>Age</t>
+                    </th>
+                    <th style="border: 1px solid black;">
+                        <t>Gender</t>
+                    </th>
+                </tr>
+                <t t-foreach="doc.patient_ids" t-as="patient">
+                    <t t-if="patient.degree_of_morbidity == '1'">
+                        <t t-set="back_color" t-value="'background-color:green'"/>
+                    </t>
+                    <t t-elif="patient.degree_of_morbidity == '2'">
+                        <t t-set="back_color" t-value="'background-color:yellow'"/>
+                    </t>
+                    <t t-elif="patient.degree_of_morbidity == '3'">
+                        <t t-set="back_color" t-value="'background-color:red'"/>
+                    </t>
+                    <tr style="border: 1px solid black;" t-attf-style="{{back_color}}">
+                        <th>
+                            <div t-field="patient.display_name"/>
+                        </th>
+                        <th>
+                            <div t-field="patient.phone"/>
+                        </th>
+                        <th>
+                            <div t-field="patient.age"/>
+                        </th>
+                        <th>
+                            <div t-field="patient.gender"/>
+                        </th>
+                    </tr>
+                </t>
+            </table>
+        </div>
+    </template>
+
+    <template id="print_date_time">
+        <div style="text-align:right;">
+            <span t-esc="user.company_id.city"/>
+            <br/>
+            <div name="datetime">
+                <span t-esc="context_timestamp(datetime.datetime.now()).strftime('%Y-%m-%d %H:%M')"/>
+            </div>
+        </div>
+    </template>
+
+    <template id="report_doctor">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="hr_hospital.main_header"/>
+                <br/>
+                <t t-call="hr_hospital.information_about_doctor"/>
+                <br/>
+                <div style="text-align:center; margin: 0 auto;">
+                    <h2>History of activity</h2>
+                </div>
+                <t t-call="hr_hospital.history_about_patient_of_doctor"/>
+                <br/>
+                <t t-call="hr_hospital.table_of_patient"/>
+                <br/>
+                <t t-call="hr_hospital.print_date_time"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

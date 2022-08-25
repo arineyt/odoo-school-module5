@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="diagnosis_view_tree" model="ir.ui.view">
+        <field name="name">diagnosis.view.tree</field>
+        <field name="model">hr_hospital.diagnosis</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="patient_id"/>
+                <field name="doctor_id"/>
+                <field name="disease_id"/>
+                <field name="date_of_diagnosis"/>
+            </tree>
+        </field>
+    </record>
+    <record id="diagnosis_view_form" model="ir.ui.view">
+        <field name="name">diagnosis.view.form</field>
+        <field name="model">hr_hospital.diagnosis</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <label for="name" class="oe_inline"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <field name="patient_id"/>
+                        <field name="doctor_id"/>
+                        <field name="disease_id"/>
+                        <field name="date_of_diagnosis"/>
+                        <field name="comments_of_mentor"/>
+                        <field name="treatment"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="diagnosis_view_graph" model="ir.ui.view">
+        <field name="name">diagnosis.view.graph</field>
+        <field name="model">hr_hospital.diagnosis</field>
+        <field name="arch" type="xml">
+            <graph string="Diseases" type="bar">
+                <field name="date_of_diagnosis" interval="month"/>
+                <field name="disease_type_id"/>
+            </graph>
+        </field>
+    </record>
+    <record id="diagnosis_action" model="ir.actions.act_window">
+        <field name="name">Diagnosis</field>
+        <field name="res_model">hr_hospital.diagnosis</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <record id="history_diagnosis_action_from_patient" model="ir.actions.act_window">
+        <field name="name">Patient Diagnosis</field>
+        <field name="res_model">hr_hospital.diagnosis</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('patient_id','=',active_id)]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem 
+        id="diagnosis_menu" 
+        name="Diagnosis" 
+        parent="hr_hospital_visit_menu" 
+        action="diagnosis_action" 
+        sequence="20" />
+</odoo>

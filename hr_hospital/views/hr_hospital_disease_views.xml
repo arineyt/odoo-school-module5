@@ -1,0 +1,57 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="disease_view_tree" model="ir.ui.view">
+        <field name="name">disease.view.tree</field>
+        <field name="model">hr_hospital.disease</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="disease_type_id"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+    <record id="disease_view_form" model="ir.ui.view">
+        <field name="name">disease.view.form</field>
+        <field name="model">hr_hospital.disease</field>
+        <field name="arch" type="xml">
+            <form string="Disease">
+                <sheet>
+                    <group>
+                         <label for="name" class="oe_inline"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <field name="disease_type_id"/>
+                        <separator string="Description"/>
+                        <field name="description" class="oe-bordered-editor" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="disease_view_search" model="ir.ui.view">
+        <field name="name">disease.view.search</field>
+        <field name="model">hr_hospital.disease</field>
+        <field name="arch" type="xml">
+            <search string="">
+                <searchpanel view_types="tree,pivot">
+                    <field name="disease_type_id" hierarchize="1" enable_counters="1"/>
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+    <record id="disease_action" model="ir.actions.act_window">
+        <field name="name">Diseases</field>
+        <field name="res_model">hr_hospital.disease</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem
+        id="disease_menu"
+        name="Diseases"
+        action="disease_action"
+        parent="hr_hospital_visit_menu"
+        sequence="100"/>
+</odoo>

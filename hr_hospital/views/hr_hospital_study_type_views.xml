@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='utf-8'?>
+<odoo>
+    <record id="study_type_view_tree" model="ir.ui.view">
+        <field name="name">study.type.view.tree</field>
+        <field name="model">hr_hospital.study.type</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="parent_id"/>
+            </tree>
+        </field>
+    </record>
+    <record id="study_type_view_form" model="ir.ui.view">
+        <field name="name">study.type.view.form</field>
+        <field name="model">hr_hospital.study.type</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group>
+                        <label for="name" class="oe_inline"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                        <field name="parent_id"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    <record id="study_type_action" model="ir.actions.act_window">
+        <field name="name">Study type</field>
+        <field name="res_model">hr_hospital.study.type</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
+    </record>
+    <menuitem
+        id="study_type_menu"
+        name="Types of study"
+        action="study_type_action"
+        parent="hr_hospital_catalogs_menu"
+        sequence="80"/>
+</odoo>
